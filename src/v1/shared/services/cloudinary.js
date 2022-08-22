@@ -1,0 +1,21 @@
+import cloudinary from "cloudinary";
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const cloudinaryUploadMethod = async (file) => {
+  return new Promise((resolve) => {
+    cloudinary.v2.uploader.upload(file, (err, res) => {
+      if (err) return res.status(500).send("upload file error");
+
+      resolve({
+        res: res.secure_url,
+      });
+    });
+  });
+};
+
+export default cloudinaryUploadMethod;
